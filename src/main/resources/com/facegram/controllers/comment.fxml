@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="paneComment" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="157.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.facegram.controllers.ItemCommentController">
+    <children>
+        <Label fx:id="lblUser" layoutX="15.0" layoutY="26.0" text="Usuario" />
+        <TextArea fx:id="txtComment" layoutX="16.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="291.0" />
+        <Label fx:id="lblDate" layoutX="14.0" layoutY="115.0" text="Fecha" />
+      <Separator layoutX="14.0" layoutY="16.0" prefHeight="0.0" prefWidth="291.0" />
+      <Separator layoutX="15.0" layoutY="142.0" prefHeight="0.0" prefWidth="291.0" />
+    </children>
+</Pane>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchorNewComent" prefHeight="148.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.facegram.controllers.NewCommentController">
+   <children>
+      <TextArea fx:id="textComment" layoutX="13.0" layoutY="14.0" prefHeight="62.0" prefWidth="294.0" promptText="Insert Here Your Comment" wrapText="true" />
+      <Button fx:id="buttonAdd" layoutX="126.0" layoutY="98.0" mnemonicParsing="false" onAction="#addComment" text="Comment" />
+   </children>
+</AnchorPane>

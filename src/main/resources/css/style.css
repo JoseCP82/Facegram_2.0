@@ -1,0 +1,11 @@
+.button:hover {
+     -fx-background-color: lightgreen;
+ }
+
+.boton-cerrar:hover {
+    -fx-background-color: red;
+ }
+
+.boton-edit:hover {
+    -fx-background-color: lightblue;
+}
