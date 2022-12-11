@@ -79,7 +79,7 @@ public class FeedController extends Controller implements Initializable {
      * Lee de la bbdd todos los post y los muestra
      */
     public void showPosts()  {
-        List<Post> posts = new PostDAO().getAll();
+        List<Post> posts = PostDAO.getAll();
         Collections.sort(posts, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
         Pane pane = null;
         User u = null;

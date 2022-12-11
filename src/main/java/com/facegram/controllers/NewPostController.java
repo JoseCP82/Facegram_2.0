@@ -30,6 +30,7 @@ public class NewPostController extends Controller {
      */
     @FXML
     private void publishPost() {
+        boolean insertOk=false;
         Message ms = new ConfirmMessage("¿Desea confirmar la publicación?");
         ms.showMessage();
         if(((ConfirmMessage) ms).getBt() == ButtonType.OK) {
@@ -40,8 +41,10 @@ public class NewPostController extends Controller {
                     Calendar calendar = Calendar.getInstance();
                     Date dateNow = calendar.getTime();
                     User u = permanentUser;
-                    PostDAO pdao = new PostDAO(new Post(this.txtContent.getText(), dateNow, dateNow, permanentUser));
-                    if(pdao.insert()){
+                    Post post = new Post(1,this.txtContent.getText(), dateNow, dateNow);
+                    insertOk=PostDAO.insert(post);
+                    post.setOwner(permanentUser);
+                    if(insertOk){
                         new InfoMessage("Has realizado una nueva publicación!!!").showMessage();
                         txtContent.setText("");
                     }
