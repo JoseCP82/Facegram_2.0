@@ -1,5 +1,6 @@
 package com.facegram.controllers;
 
+import com.facegram.connection.DBConnection;
 import com.facegram.log.Log;
 import com.facegram.model.DAO.PostDAO;
 import com.facegram.model.DAO.UserDAO;
@@ -174,6 +175,7 @@ public class FeedController extends Controller implements Initializable {
         Message ms = new ConfirmMessage("¿Seguro que desea salir?");
         ms.showMessage();
         if(((ConfirmMessage) ms).getBt() == ButtonType.OK) {
+            DBConnection.close();
             this.chronometer.interrupt();
             new InfoMessage("Duración de la sesión:\n"+this.chronometer.getSessionTime()).showMessage();
             Log.infoLogging("Aplicación finalizada.");
