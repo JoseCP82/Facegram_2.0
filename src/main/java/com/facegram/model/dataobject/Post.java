@@ -129,7 +129,7 @@ public class Post implements Serializable {
     public void setOwner(User owner) {
         if(owner.equals(this.owner)) return;
         this.owner = owner;
-        //this.owner.setPost(this);
+        this.owner.setPost(this);
     }
 
     /**
@@ -147,18 +147,18 @@ public class Post implements Serializable {
     public void setComments(List<Comment> comments) {
         if(comments==null) return;
         for(Comment comment : comments) {
-
+            this.addComment(comment);
         }
     }
 
     /**
      * Añade al array de Comments un nuevo comentario en el caso de que esté vacio
-     * @param c Comentairio a añadir
+     * @param comment Comentairio a añadir
      */
     public void addComment(Comment comment) {
         if(comment==null) return;
         if(this.comments==null) this.comments = new ArrayList<>();
-        if(!this.comments.contains((comment)) {
+        if(!this.comments.contains(comment)) {
             comment.setPost(this);
             this.comments.add(comment);
         }
@@ -169,7 +169,11 @@ public class Post implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return id == post.id && Objects.equals(text, post.text) && Objects.equals(date, post.date) && Objects.equals(editDate, post.editDate) && Objects.equals(owner, post.owner) && Objects.equals(comments, post.comments);
+        return id == post.id && Objects.equals(text, post.text) &&
+                Objects.equals(date, post.date) &&
+                Objects.equals(editDate, post.editDate) &&
+                Objects.equals(owner, post.owner) &&
+                Objects.equals(comments, post.comments);
     }
 
     @Override
