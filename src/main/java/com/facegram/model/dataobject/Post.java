@@ -129,7 +129,7 @@ public class Post implements Serializable {
     public void setOwner(User owner) {
         if(owner.equals(this.owner)) return;
         this.owner = owner;
-        this.owner.setPost(this);
+        this.owner.setPosts(this);
     }
 
     /**
