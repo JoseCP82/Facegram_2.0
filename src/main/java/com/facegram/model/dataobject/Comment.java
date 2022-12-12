@@ -12,7 +12,8 @@ public class Comment {
     private int id;
     @OneToOne (mappedBy = "user", cascade = CascadeType.ALL)
     private User user;
-    @OneToOne (mappedBy = "post", cascade = CascadeType.ALL)
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name = "id_post")
     private Post post;
     @Column (name = "TEXT")
     private String text;
