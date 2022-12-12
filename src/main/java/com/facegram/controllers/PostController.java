@@ -54,7 +54,7 @@ public class PostController extends Controller {
         ConfirmMessage cm = new ConfirmMessage("¿Seguro que desa eliminar el post actual?");
         cm.showMessage();
         if(cm.getBt()== ButtonType.OK){
-            if(new PostDAO(idPost).delete()==1) {
+            if(PostDAO.delete(idPost)) {
                 new InfoMessage("Post eliminado.").showMessage();
             } else {
                 new ErrorMessage("No se pudo eliminar el post.").showMessage();
@@ -70,14 +70,15 @@ public class PostController extends Controller {
         ConfirmMessage cm = new ConfirmMessage("¿Seguro que desa modificar el post actual?");
         cm.showMessage();
         if(cm.getBt()== ButtonType.OK){
-            PostDAO p = new PostDAO(idPost);
+            Post p = new Post();
+            p.setId(idPost);
             p.setText(txtContent.getText());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();
             Date dateNow = calendar.getTime();
             p.setEditDate(dateNow);
             System.out.println(p.getId());
-            if(p.update()==1) {
+            if(PostDAO.update(p)) {
                 new InfoMessage("Post actualizado.").showMessage();
             } else {
                 new ErrorMessage("No se pudo actualizar el post.").showMessage();
