@@ -94,7 +94,7 @@ public class RegisterController extends Controller {
                 Message m = new ConfirmMessage("El usuario no existe.\n ¿Desea crearlo?");
                 m.showMessage();
                 if(((ConfirmMessage)m).getBt()==ButtonType.OK){
-                    uDAO.insert();
+                    uDAO.insert(u);
                     new InfoMessage("Usuario añadido").showMessage();
                     permanentUser=uDAO.get(name);
                     changeFeed();
