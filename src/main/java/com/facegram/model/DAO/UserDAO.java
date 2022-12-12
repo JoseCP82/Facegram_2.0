@@ -2,15 +2,15 @@ package com.facegram.model.DAO;
 
 import com.facegram.connection.DBConnection;
 import com.facegram.interfaces.IDAO;
-import com.facegram.log.Log;
 import com.facegram.model.dataobject.Post;
 import com.facegram.model.dataobject.User;
 
-import java.sql.*;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public class UserDAO extends User implements IDAO<User, Integer> {
+public class UserDAO extends User{
+
+    private static EntityManager manager;
 
     public UserDAO(){}
     public UserDAO(int id){
@@ -22,48 +22,20 @@ public class UserDAO extends User implements IDAO<User, Integer> {
     public UserDAO(int id, String name, String password){
         super(id, name, password);
     }
-    /**
-     * Sentencias de UserDAO
-     */
-    private final static String INSERT ="INSERT INTO user (name,password) VALUES (?,?)";
-
-
-    private final static String SELECTBYID ="SELECT id, name, password FROM user WHERE id=?";
-    private final static String SELECTBYNAME ="SELECT id, name, password FROM user WHERE name=?";
-    private final static String SELECTFOLLOWERSBYUSER="SELECT id, name, password FROM user WHERE name=?";
-    private final static String SELECTALL ="SELECT id, name, password FROM user";
-
-    private final static String UPDATE ="UPDATE user SET, name=?, password=? WHERE id=?";
-    private final static String DELETE ="DELETE FROM user WHERE id=?";
 
     /**
      * Mátodo que crea un User en la base de datos
      * @return true o false si lo crea o no
      */
-    @Override
-    public boolean insert() {
+    public boolean insert(User u) {
+        manager = DBConnection.getConnect().createEntityManager();
         boolean result=false;
-        if(id==-1){
-            Connection miCon = DBConnection.getConnect();
-            if(miCon!=null){
-                PreparedStatement ps;
-                try{
-                    ps = miCon.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1,this.name);
-                    ps.setString(2,this.password);
-                    ps.executeUpdate();
-                    ResultSet rs= ps.getGeneratedKeys();
-                    if(rs.next()){
-                        this.id=rs.getInt(1);
-                    }
-                    ps.close();
-                    rs.close();
-                    result=true;
-                } catch(SQLException e){
-                    Log.warningLogging(e+"");
-                    result=false;
-                }
-            }
+        if(!manager.contains(u)){
+            manager.getTransaction().begin();
+            manager.persist(u);
+            result = true;
+            manager.getTransaction().commit();
+            manager.close();
         }
         return result;
     }
@@ -73,30 +45,10 @@ public class UserDAO extends User implements IDAO<User, Integer> {
      * @param id Id del objeto a buscar
      * @return el User o null si lo ha encontrado o no
      */
-    @Override
     public User get(Integer id) {
-        User aux=null;
-        Connection miCon = DBConnection.getConnect();
-        if(miCon!=null){
-            PreparedStatement ps;
-            try {
-                ps = miCon.prepareStatement(SELECTBYID);
-                ps.setInt(1,id);
-                if(ps.execute()){
-                    ResultSet rs = ps.getResultSet();
-                    if(rs.next()){
-                        this.id=rs.getInt("id");
-                        this.name=rs.getString("name");
-                        this.password=rs.getString("password");
-                    }
-                }
-                ps.close();
-                aux=new User(this.id,this.name,this.password);
-            } catch (SQLException e) {
-                Log.warningLogging(e+"");
-                aux=null;
-            }
-        }
+        manager = DBConnection.getConnect().createEntityManager();
+        User aux = manager.find(User.class, id);
+        manager.close();
         return aux;
     }
 
@@ -106,28 +58,9 @@ public class UserDAO extends User implements IDAO<User, Integer> {
      * @return el User o null si lo ha encontrado o no
      */
     public User get(String name) {
-        User aux=null;
-        Connection miCon = DBConnection.getConnect();
-        if(miCon!=null) {
-            PreparedStatement ps;
-            try {
-                ps = miCon.prepareStatement(SELECTBYNAME);
-                ps.setString(1, name);
-                if (ps.execute()) {
-                    ResultSet rs = ps.getResultSet();
-                    if (rs.next()) {
-                        this.id = rs.getInt("id");
-                        this.name=rs.getString("name");
-                        this.password = rs.getString("password");
-                    }
-                }
-                ps.close();
-                aux = new User(this.id, this.name, this.password);
-            } catch (SQLException e) {
-                Log.warningLogging(e + "");
-                aux = null;
-            }
-        }
+        manager = DBConnection.getConnect().createEntityManager();
+        User aux = manager.find(User.class, name);
+        manager.close();
         return aux;
     }
 
@@ -136,26 +69,9 @@ public class UserDAO extends User implements IDAO<User, Integer> {
      * @return la lista de Users o null si los ha encontrado o no
      */
     public List<User> getAll() {
-        List<User> result = new ArrayList<User>();
-        Connection miCon = DBConnection.getConnect();
-        if(miCon!=null){
-            PreparedStatement ps;
-            try{
-                ps = miCon.prepareStatement(SELECTALL);
-                if(ps.execute()){
-                    ResultSet rs=ps.getResultSet();
-                    while(rs.next()){
-                        User aux = new User(rs.getInt("id"),rs.getString("name"),rs.getString("password"));
-                        result.add(aux);
-                    }
-                    rs.close();
-                }
-                ps.close();
-            }catch (SQLException e){
-                Log.warningLogging(e+"");
-                result=null;
-            }
-        }
+        manager = DBConnection.getConnect().createEntityManager();
+        List<User> result = manager.createQuery("FROM user").getResultList();
+        manager.close();
         return result;
     }
 
@@ -164,27 +80,9 @@ public class UserDAO extends User implements IDAO<User, Integer> {
      * @return la lista de Users o null si los ha encontrado o no
      */
     public List<User> getFollowOfUser(User u) {
-        List<User> result = new ArrayList<User>();
-        Connection miCon = DBConnection.getConnect();
-        if(miCon!=null){
-            PreparedStatement ps;
-            try{
-                ps = miCon.prepareStatement(SELECTFOLLOWERSBYUSER);
-                ps.setString(1, u.getName());
-                if(ps.execute()){
-                    ResultSet rs=ps.getResultSet();
-                    while(rs.next()){
-                        User aux = new User(rs.getInt("id"),rs.getString("name"),rs.getString("password"));
-                        result.add(aux);
-                    }
-                    rs.close();
-                }
-                ps.close();
-            }catch (SQLException e){
-                Log.warningLogging(e+"");
-                result=null;
-            }
-        }
+        manager = DBConnection.getConnect().createEntityManager();
+        List<User> result = (List<User>) manager.find(User.class, u);
+        manager.close();
         return result;
     }
 
@@ -200,19 +98,24 @@ public class UserDAO extends User implements IDAO<User, Integer> {
     }
 
     /**
-     *Método que añade un Post a la lista de Posts de un User
+     * Método que añade un Post a la lista de Posts de un User
+     *
      * @param p post que se va a añadir a la lista de Posts
+     * @return true o false si inserta o actualiza el Post
      */
-    public void addPosts(Post p){
-        boolean result=false;
+    public boolean addPosts(Post p){
+        boolean result = false;
         p.setOwner(this);
-        PostDAO pDAO = new PostDAO(p);
+        PostDAO pDAO = new PostDAO();
         if(p.getId()==-1){
             pDAO.insert();
+            result = true;
         }else{
             pDAO.update();
+            result = false;
         }
-        super.addPosts(pDAO);
+        super.addPosts(p);
+        return result;
     }
 
     /**
@@ -230,17 +133,20 @@ public class UserDAO extends User implements IDAO<User, Integer> {
      * Método que añade un Follower a la lista de Followers de un User
      *
      * @param u follower que se va a añadir a la lista de Followers
-     * @return
+     * @return true o false si inserta o actualiza el follower
      */
-    public void addFollowers(User u){
-        boolean result=false;
+    public boolean addFollowers(User u){
+        boolean result = false;
         u.setFollowers(this);
         UserDAO uDAO = new UserDAO(u);
         if(u.getId()==-1){
-            uDAO.insert();
+            uDAO.insert(u);
+            result = true;
         }else {
-            uDAO.update();
+            uDAO.update(u);
+            result = false;
         }
+        return result;
     }
 
         /**
@@ -257,72 +163,56 @@ public class UserDAO extends User implements IDAO<User, Integer> {
         /**
          *Método que añade un Followered a la lista de Followereds de un User
          * @param u followered que se va a añadir a la lista de Followereds
+         * @return true o false si inserta o actualiza al followered
          */
-        public void addFollowereds(User u) {
+        public boolean addFollowereds(User u) {
             boolean result = false;
             u.setFollowereds(this);
             UserDAO uDAO = new UserDAO(u);
             if (u.getId() == -1) {
-                uDAO.insert();
+                uDAO.insert(u);
+                result = true;
             } else {
-                uDAO.update();
+                uDAO.update(u);
+                result = false;
             }
+            return result;
         }
 
     /**
      * Método que edita los campos de la tabla User en la base de datos
-     * @return 1 o 0 si los ha editado o no
+     * @return true o false si los ha editado o no
      */
-    @Override
-    public int update() {
-        int i=-1;
-        if(id!=-1){
-            Connection miCon = DBConnection.getConnect();
-            if(miCon!=null){
-                PreparedStatement ps;
-                try {
-                    ps = miCon.prepareStatement(UPDATE);
-                    ps.setInt(1, this.id);
-                    ps.setString(2, this.name);
-                    ps.setString(3, this.password);
-                    ps.executeUpdate();
-                    ps.close();
-                    i=1;
-                } catch (SQLException e) {
-                    Log.warningLogging(e+"");
-                    i=0;
-                }
-            }
+    public boolean update(User u) {
+        boolean result = false;
+        manager = DBConnection.getConnect().createEntityManager();
+        if(manager.contains(u)){
+            manager.getTransaction().begin();
+            u.setName(name);
+            u.setPassword(password);
+            manager.merge(u);
+            manager.getTransaction().commit();
+            result = true;
+            manager.close();
         }
-        return i;
+        return result;
     }
 
     /**
-     * Método que borra la tabla User de la base de datos
-     * @return 1 o 0 si la ha borrado o no
+     * Método que borra una tabla User de la base de datos
+     * @return true o true si la ha borrado o no
      */
-    @Override
-    public int delete() {
-        int i=-1;
-        if(id!=-1){
-            Connection miCon = DBConnection.getConnect();
-            if(miCon!=null){
-                PreparedStatement ps;
-                try {
-                    ps=miCon.prepareStatement(DELETE);
-                    ps.setInt(1, this.id);
-                    if(ps.executeUpdate()==1){
-                        this.id=-1;
-                    }
-                    ps.close();
-                    i=1;
-                }catch(SQLException e) {
-                    Log.warningLogging(e+"");
-                    i=0;
-                }
-            }
+    public boolean delete(User u) {
+        boolean result = false;
+        manager = DBConnection.getConnect().createEntityManager();
+        if(manager.contains(u)){
+            manager.getTransaction().begin();
+            manager.remove(u);
+            manager.getTransaction().commit();
+            result = true;
+            manager.close();
         }
-        return i;
+        return result;
     }
 
 }

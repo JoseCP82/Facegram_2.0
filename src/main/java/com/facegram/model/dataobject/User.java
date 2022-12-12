@@ -22,11 +22,12 @@ public class User implements Serializable {
     protected String name;
     @Column(name = "PASSWORD")
     protected String password;
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected List<Post> posts;
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected List<User> followereds;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "followers")
     protected List<User> followers;
 
     /**
@@ -88,11 +89,14 @@ public class User implements Serializable {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
-    public void addPosts(Post p){
+    public boolean addPosts(Post p){
+        boolean result = false;
         if(this.posts==null) {
             this.posts=new ArrayList<Post>();
             this.posts.add(p);
+            result = true;
         }
+        return result;
     }
     public List<User> getFollowereds() {
         return followereds;
@@ -100,11 +104,14 @@ public class User implements Serializable {
     public void setFollowereds(User u){
         this.followers=u.followers;
     }
-    public void addFollowereds(User u){
+    public boolean addFollowereds(User u){
+        boolean result = false;
         if(this.followereds==null) {
             this.followereds=new ArrayList<User>();
             this.followereds.add(u);
+            result = true;
         }
+        return result;
     }
     public List<User> getFollowers() {
         return followers;
@@ -112,11 +119,14 @@ public class User implements Serializable {
     public void setFollowers(User u){
         this.followereds=u.followereds;
     }
-    public void addFollowers(User u){
+    public boolean addFollowers(User u){
+        boolean result = false;
         if(this.followers==null) {
             this.followers=new ArrayList<User>();
             this.followers.add(u);
+            result = true;
         }
+        return result;
     }
 
     /**
