@@ -1,14 +1,23 @@
 package com.facegram.model.dataobject;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table (name = "COMMENT")
 public class Comment {
 
-    protected int id;
-    protected User user;
-    protected Post post;
-    protected String text;
-    protected Date date;
+    @Id
+    @Column (name = "id")
+    private int id;
+    @OneToOne (mappedBy = "user", cascade = CascadeType.ALL)
+    private User user;
+    @OneToOne (mappedBy = "post", cascade = CascadeType.ALL)
+    private Post post;
+    @Column (name = "TEXT")
+    private String text;
+    @Column (name = "DATE")
+    private Date date;
 
     /**
      * Constructor parametrizado
