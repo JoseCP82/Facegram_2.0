@@ -25,7 +25,7 @@ public class PostDAO {
         manager.persist(post);
         result=true;
         manager.getTransaction().commit();
-        closeManger();
+        closeManager();
         return result;
     }
 
@@ -39,7 +39,7 @@ public class PostDAO {
         manager = DBConnection.getConnect().createEntityManager();
         Post post =null;
         post = manager.find(Post.class,id);
-        closeManger();
+        closeManager();
         return post;
     }
 
@@ -51,7 +51,7 @@ public class PostDAO {
         manager = DBConnection.getConnect().createEntityManager();
         List<Post> result = new ArrayList<Post>();
         result = manager.createQuery("FROM Post").getResultList();
-        closeManger();
+        closeManager();
         return result;
     }
 
@@ -63,8 +63,8 @@ public class PostDAO {
     public static List<Post> getPostOfUser(User user){
         List<Post> result = new ArrayList<Post>();
         manager = DBConnection.getConnect().createEntityManager();
-
-        closeManger();
+        result = manager.createQuery("SELECT id, date, edit_date, text FROM post WHERE id_user="+String.valueOf(user.getId())).getResultList();
+        closeManager();
         return result;
     }
 
@@ -79,7 +79,7 @@ public class PostDAO {
         manager.merge(post);
         result= true;
         manager.getTransaction().commit();
-        closeManger();
+        closeManager();
         return result;
     }
 
@@ -87,16 +87,16 @@ public class PostDAO {
      * Elimina un post
      * @return 1 o 0 si la opoeración se realizó con éxito o no
      */
-    public static boolean delete(Post post) {
+    public static boolean delete(int id) {
         boolean result = false;
         manager = DBConnection.getConnect().createEntityManager();
         manager.getTransaction().begin();
-        manager.remove(post);
+        manager.remove(id);
         result= true;
         manager.getTransaction().commit();
-        closeManger();
+        closeManager();
         return result;
     }
 
-    private static void closeManger() { manager.close(); }
+    private static void closeManager() { manager.close(); }
 }
