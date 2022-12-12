@@ -27,7 +27,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> followereds;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "followers")
+    @JoinColumn(name = "ID_USER")
     private List<User> followers;
 
     /**

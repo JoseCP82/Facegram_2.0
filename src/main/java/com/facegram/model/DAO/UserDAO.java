@@ -116,7 +116,7 @@ public class UserDAO {
      */
     public static List<User> getFollowers(){
         if(u.getFollowers()==null){
-            u.setFollowers((User) this.getFollowOfUser(u));
+            u.setFollowers((User) getFollowOfUser(u));
         }
         return u.getFollowers();
     }
@@ -147,7 +147,7 @@ public class UserDAO {
          */
         public static List<User> getFollowereds(){
             if(u.getFollowereds()==null){
-                u.setFollowereds((User) this.getFollowOfUser(u));
+                u.setFollowereds((User) getFollowOfUser(u));
             }
             return u.getFollowereds();
         }
@@ -180,8 +180,8 @@ public class UserDAO {
         manager = DBConnection.getConnect().createEntityManager();
         if(manager.contains(u)){
             manager.getTransaction().begin();
-            u.setName(this.u.getName());
-            u.setPassword(this.u.getPassword());
+            u.setName(u.getName());
+            u.setPassword(u.getPassword());
             manager.merge(u);
             manager.getTransaction().commit();
             result = true;
