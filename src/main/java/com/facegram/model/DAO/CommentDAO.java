@@ -1,19 +1,11 @@
 package com.facegram.model.DAO;
 
 import com.facegram.connection.DBConnection;
-import com.facegram.controllers.PostController;
-import com.facegram.interfaces.IDAO;
-import com.facegram.log.Log;
 import com.facegram.model.dataobject.Comment;
 import com.facegram.model.dataobject.Post;
-import com.facegram.model.dataobject.User;
 
 import javax.persistence.EntityManager;
-import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class CommentDAO {
