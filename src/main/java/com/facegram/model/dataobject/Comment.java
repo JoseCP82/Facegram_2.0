@@ -10,7 +10,9 @@ public class Comment {
     @Id
     @Column (name = "id")
     private int id;
-    @OneToOne (mappedBy = "user", cascade = CascadeType.ALL)
+    //@OneToOne (mappedBy = "user", cascade = CascadeType.ALL)
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name = "id_user")
     private User user;
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "id_post")

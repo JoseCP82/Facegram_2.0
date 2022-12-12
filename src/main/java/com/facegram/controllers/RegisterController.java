@@ -88,22 +88,22 @@ public class RegisterController extends Controller {
         String password = tfPassword.getText();
         if(!name.equals("") && !password.equals("")){
             User u = new User(name,password);
-            UserDAO uDAO = new UserDAO();
+            //UserDAO uDAO = new UserDAO();
             u.setPassword(encrypt(password));
-            if(uDAO.get(name).getId()==-1){
+            if(UserDAO.get(name).getId()==-1){
                 Message m = new ConfirmMessage("El usuario no existe.\n ¿Desea crearlo?");
                 m.showMessage();
                 if(((ConfirmMessage)m).getBt()==ButtonType.OK){
-                    uDAO.insert(u);
+                    UserDAO.insert(u);
                     new InfoMessage("Usuario añadido").showMessage();
-                    permanentUser=uDAO.get(name);
+                    permanentUser=UserDAO.get(name);
                     changeFeed();
                 }
             }else{
-                if(uDAO.get(name).getName().equals(name) && uDAO.get(name).getPassword().equals(encrypt(password))){
+                if(UserDAO.get(name).getName().equals(name) && UserDAO.get(name).getPassword().equals(encrypt(password))){
                     Message m = new InfoMessage("Sesión iniciada");
                     m.showMessage();
-                    permanentUser=uDAO.get(name);
+                    permanentUser=UserDAO.get(name);
                     changeFeed();
                 }else{
                     new ErrorMessage("El nombre o contraseña son incorrectos").showMessage();
