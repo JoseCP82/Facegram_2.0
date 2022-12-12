@@ -2,6 +2,7 @@ package com.facegram.controllers;
 
 import com.facegram.model.DAO.CommentDAO;
 import com.facegram.model.DAO.PostDAO;
+import com.facegram.model.dataobject.Comment;
 import com.facegram.utils.badWords.BadWords;
 import com.facegram.utils.message.ConfirmMessage;
 import com.facegram.utils.message.ErrorMessage;
@@ -27,16 +28,17 @@ public class NewCommentController extends Controller {
     private void addComment() {
         String text = this.textComment.getText();
         CommentDAO cDao = new CommentDAO();
+        Comment comment = new Comment();
         Message ms = new ConfirmMessage("¿Desea publicar el comentario?");
         ms.showMessage();
         if(((ConfirmMessage) ms).getBt() == ButtonType.OK) {
             if (!text.equals("")) {
                 Connection conn = BadWords.getConnect();
                 if (!BadWords.isFound(text)) {
-                    cDao.setText(text);
-                    cDao.setUser(permanentUser);
-                    cDao.setPost(new PostDAO().get(permanentIdPost));
-                    if (cDao.insert()) {
+                    comment.setText(text);
+                    comment.setUser(permanentUser);
+                    comment.setPost(new PostDAO().get(permanentIdPost));
+                    if (cDao.insert(comment)) {
                         new InfoMessage("Comentario publicado.").showMessage();
                     } else {
                         new ErrorMessage("No se pudo publicar el comentario.").showMessage();
