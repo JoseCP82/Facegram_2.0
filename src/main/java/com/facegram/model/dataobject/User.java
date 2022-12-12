@@ -17,18 +17,18 @@ public class User implements Serializable {
 
     @Id
     @Column(name = "ID")
-    protected int id;
+    private int id;
     @Column(name = "NAME")
-    protected String name;
+    private String name;
     @Column(name = "PASSWORD")
-    protected String password;
+    private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    protected List<Post> posts;
+    private List<Post> posts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    protected List<User> followereds;
+    private List<User> followereds;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followers")
-    protected List<User> followers;
+    private List<User> followers;
 
     /**
      * Constructores de User por defecto y fullBuild

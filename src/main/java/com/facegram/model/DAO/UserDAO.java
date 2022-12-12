@@ -1,27 +1,19 @@
 package com.facegram.model.DAO;
 
 import com.facegram.connection.DBConnection;
-import com.facegram.interfaces.IDAO;
 import com.facegram.model.dataobject.Post;
 import com.facegram.model.dataobject.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class UserDAO extends User{
+public class UserDAO {
 
+    /**
+     * Atributos de la clase
+     */
     private static EntityManager manager;
-
-    public UserDAO(){}
-    public UserDAO(int id){
-        this.get(id);
-    }
-    public UserDAO(User u){
-    super(u.getId(), u.getName(), u.getPassword());
-    }
-    public UserDAO(int id, String name, String password){
-        super(id, name, password);
-    }
+    private User u;
 
     /**
      * Mátodo que crea un User en la base de datos
@@ -91,10 +83,10 @@ public class UserDAO extends User{
      * @return la lista de Posts
      */
     public List<Post> getPosts(){
-        if(super.getPosts()==null){
-            setPosts(PostDAO.getPostOfUser(this));
+        if(u.getPosts()==null){
+            u.setPosts(PostDAO.getPostOfUser(u));
         }
-        return super.getPosts();
+        return u.getPosts();
     }
 
     /**
@@ -105,16 +97,16 @@ public class UserDAO extends User{
      */
     public boolean addPosts(Post p){
         boolean result = false;
-        p.setOwner(this);
+        p.setOwner(u);
         PostDAO pDAO = new PostDAO();
         if(p.getId()==-1){
-            pDAO.insert();
+            pDAO.insert(p);
             result = true;
         }else{
-            pDAO.update();
+            pDAO.update(p);
             result = false;
         }
-        super.addPosts(p);
+        u.addPosts(p);
         return result;
     }
 
@@ -123,10 +115,10 @@ public class UserDAO extends User{
      * @return la lista de Followers
      */
     public List<User> getFollowers(){
-        if(super.getFollowers()==null){
-            setFollowers((User) this.getFollowOfUser(this));
+        if(u.getFollowers()==null){
+            u.setFollowers((User) this.getFollowOfUser(u));
         }
-        return super.getFollowers();
+        return u.getFollowers();
     }
 
     /**
@@ -137,8 +129,8 @@ public class UserDAO extends User{
      */
     public boolean addFollowers(User u){
         boolean result = false;
-        u.setFollowers(this);
-        UserDAO uDAO = new UserDAO(u);
+        u.setFollowers(u);
+        UserDAO uDAO = new UserDAO();
         if(u.getId()==-1){
             uDAO.insert(u);
             result = true;
@@ -154,10 +146,10 @@ public class UserDAO extends User{
          * @return la lista de Followereds
          */
         public List<User> getFollowereds(){
-            if(super.getFollowereds()==null){
-                setFollowereds((User) this.getFollowOfUser(this));
+            if(u.getFollowereds()==null){
+                u.setFollowereds((User) this.getFollowOfUser(u));
             }
-            return super.getFollowereds();
+            return u.getFollowereds();
         }
 
         /**
@@ -167,8 +159,8 @@ public class UserDAO extends User{
          */
         public boolean addFollowereds(User u) {
             boolean result = false;
-            u.setFollowereds(this);
-            UserDAO uDAO = new UserDAO(u);
+            u.setFollowereds(u);
+            UserDAO uDAO = new UserDAO();
             if (u.getId() == -1) {
                 uDAO.insert(u);
                 result = true;
@@ -188,8 +180,8 @@ public class UserDAO extends User{
         manager = DBConnection.getConnect().createEntityManager();
         if(manager.contains(u)){
             manager.getTransaction().begin();
-            u.setName(name);
-            u.setPassword(password);
+            u.setName(this.u.getName());
+            u.setPassword(this.u.getPassword());
             manager.merge(u);
             manager.getTransaction().commit();
             result = true;
