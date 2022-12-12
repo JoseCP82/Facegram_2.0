@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CommentDAO extends Comment {
+public class CommentDAO {
 
     /**
      * Atributos de clase
