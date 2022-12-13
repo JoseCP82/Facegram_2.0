@@ -24,10 +24,12 @@ public class User implements Serializable {
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Transient
+    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> followereds;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_USER")
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "ID_USER")
+    @Transient
     private List<User> followers;
 
     /**
