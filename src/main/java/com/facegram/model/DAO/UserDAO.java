@@ -65,7 +65,7 @@ public class UserDAO {
      */
     public static List<User> getAll() {
         //manager = DBConnection.getConnect().createEntityManager();
-        List<User> result = manager.createQuery("FROM user").getResultList();
+        List<User> result = manager.createNativeQuery("FROM user").getResultList();
         manager.close();
         return result;
     }
