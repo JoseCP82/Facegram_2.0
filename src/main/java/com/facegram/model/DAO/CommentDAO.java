@@ -5,6 +5,8 @@ import com.facegram.model.dataobject.Comment;
 import com.facegram.model.dataobject.Post;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,8 @@ public class CommentDAO {
     /**
      * Atributos de clase
      */
-    private static EntityManager manager;
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
+    private static EntityManager manager = emf.createEntityManager();
 
     /**
      * Inserta un nuevo comentario en la base de datos

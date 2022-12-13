@@ -4,6 +4,8 @@ import com.facegram.connection.DBConnection;
 import com.facegram.model.dataobject.Post;
 import com.facegram.model.dataobject.User;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,8 @@ public class PostDAO {
     /**
      * Atributos de clase
      */
-    private static EntityManager manager;
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
+    private static EntityManager manager = emf.createEntityManager();
 
     /**
      * Inserta un nuevo post en la base de datos

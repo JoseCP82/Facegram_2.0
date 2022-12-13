@@ -14,8 +14,8 @@ public class UserDAO {
     /**
      * Atributos de la clase
      */
-    //private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-    //private static EntityManager manager = emf.createEntityManager();
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
+    private static EntityManager manager = emf.createEntityManager();
     private static User u;
 
     /**
@@ -24,10 +24,6 @@ public class UserDAO {
      */
     public static boolean insert(User u) {
         //manager = DBConnection.getConnect().createEntityManager();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-        EntityManager manager = emf.createEntityManager();
-
         boolean result=false;
         if(!manager.contains(u)){
             manager.getTransaction().begin();
@@ -46,10 +42,6 @@ public class UserDAO {
      */
     public static User get(Integer id) {
         //manager = DBConnection.getConnect().createEntityManager();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-        EntityManager manager = emf.createEntityManager();
-
         User aux = manager.find(User.class, id);
         manager.close();
         return aux;
@@ -62,10 +54,6 @@ public class UserDAO {
      */
     public static User get(String name) {
         //manager = DBConnection.getConnect().createEntityManager();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-        EntityManager manager = emf.createEntityManager();
-
         User aux = manager.find(User.class, name);
         manager.close();
         return aux;
@@ -77,11 +65,6 @@ public class UserDAO {
      */
     public static List<User> getAll() {
         //manager = DBConnection.getConnect().createEntityManager();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-        EntityManager manager = emf.createEntityManager();
-
-
         List<User> result = manager.createQuery("FROM user").getResultList();
         manager.close();
         return result;
@@ -93,10 +76,6 @@ public class UserDAO {
      */
     public static List<User> getFollowOfUser(User u) {
        // manager = DBConnection.getConnect().createEntityManager();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-        EntityManager manager = emf.createEntityManager();
-
         List<User> result = (List<User>) manager.find(User.class, u);
         manager.close();
         return result;
@@ -202,10 +181,6 @@ public class UserDAO {
     public static boolean update(User u) {
         boolean result = false;
         //manager = DBConnection.getConnect().createEntityManager();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-        EntityManager manager = emf.createEntityManager();
-
         if(manager.contains(u)){
             manager.getTransaction().begin();
             u.setName(u.getName());
@@ -225,10 +200,6 @@ public class UserDAO {
     public static boolean delete(User u) {
         boolean result = false;
         //manager = DBConnection.getConnect().createEntityManager();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-        EntityManager manager = emf.createEntityManager();
-
         if(manager.contains(u)){
             manager.getTransaction().begin();
             manager.remove(u);
@@ -238,5 +209,4 @@ public class UserDAO {
         }
         return result;
     }
-
 }
