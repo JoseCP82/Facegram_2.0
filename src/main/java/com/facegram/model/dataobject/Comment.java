@@ -1,11 +1,14 @@
 package com.facegram.model.dataobject;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table (name = "COMMENT")
-public class Comment {
+public class Comment implements Serializable {
+
+    private static long serialVersionUID = 1L;
 
     @Id
     @Column (name = "id")

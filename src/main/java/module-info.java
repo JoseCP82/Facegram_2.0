@@ -13,5 +13,6 @@ module com.facegram.facegram {
     exports com.facegram.connection;
     opens com.facegram.controllers to javafx.fxml;
     exports com.facegram.controllers;
+    opens com.facegram.model.dataobject;
 
 }
