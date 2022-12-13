@@ -25,7 +25,7 @@ public class Post implements Serializable {
     @Column(name = "EDITDATE")
     private Date editDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_USER")
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
     private User owner;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
