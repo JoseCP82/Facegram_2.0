@@ -41,7 +41,8 @@ public class NewPostController extends Controller {
                     Calendar calendar = Calendar.getInstance();
                     Date dateNow = calendar.getTime();
                     User u = permanentUser;
-                    Post post = new Post(1,this.txtContent.getText(), dateNow, dateNow);
+                    Post post = new Post(this.txtContent.getText(), dateNow, dateNow);
+                    post.setOwner(permanentUser);
                     insertOk=PostDAO.insert(post);
                     post.setOwner(permanentUser);
                     if(insertOk){
