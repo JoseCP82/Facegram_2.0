@@ -1,4 +1,4 @@
-module com.facegram.facegram {
+module com.facegram {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.xml.bind;
@@ -7,12 +7,9 @@ module com.facegram.facegram {
     requires javafx.graphics;
     requires java.desktop;
     requires java.persistence;
+    requires org.hibernate.orm.core;
 
-
-    opens com.facegram.connection to java.xml.bind;
-    exports com.facegram.connection;
+    opens com.facegram.model.dataobject;
     opens com.facegram.controllers to javafx.fxml;
     exports com.facegram.controllers;
-    opens com.facegram.model.dataobject;
-
 }
