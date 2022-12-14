@@ -17,6 +17,7 @@ public class Post implements Serializable {
     private static final long serialVersionUID = 42L;
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     @Column(name = "TEXT")
     private String text;
@@ -37,7 +38,7 @@ public class Post implements Serializable {
      * @param date Fecha de creación del post
      * @param editDate Fecha de actualización del post
      */
-    public Post(int id, String text, Date date, Date editDate) {
+    public Post(String text, Date date, Date editDate) {
         this.id = id;
         this.text = text;
         this.date = date;
@@ -48,7 +49,7 @@ public class Post implements Serializable {
      * Constructor por defecto
      */
     public Post() {
-        this(-1,"",null,null);
+        this("",null,null);
     }
 
     /**

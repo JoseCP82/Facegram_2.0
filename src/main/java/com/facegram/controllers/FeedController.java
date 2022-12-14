@@ -47,7 +47,7 @@ public class FeedController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        permanentUser=UserDAO.get(33);
+        permanentUser=new UserDAO().get(1);
 
         chronometer = new Chronometer();
         chronometer.start();
@@ -96,15 +96,7 @@ public class FeedController extends Controller implements Initializable {
                 fxmlLoader.setLocation(App.class.getResource("post.fxml"));
                 pane = fxmlLoader.load();
                 PostController pc = fxmlLoader.getController();
-                //u = p.getOwner();
-
-                u= UserDAO.get(p.getOwner().getId());
-
-                System.out.println(u);
-
-                System.out.println(p);
-
-              //  u.setName(new UserDAO().get(u.getId()).getName());
+                u= new UserDAO().get(p.getOwner().getId());
                 u.setPosts(PostDAO.getPostOfUser(u));
                 if(u.getName().equals(permanentUser.getName())) {
                     pc.setPost(p,false);

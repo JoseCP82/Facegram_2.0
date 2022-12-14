@@ -15,8 +15,7 @@ public class PostDAO {
     /**
      * Atributos de clase
      */
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
-    private static EntityManager manager = emf.createEntityManager();
+    private static EntityManager manager;
 
     /**
      * Inserta un nuevo post en la base de datos
@@ -65,14 +64,9 @@ public class PostDAO {
      * @return Lista de post
      */
     public static List<Post> getPostOfUser(User user){
-        List<Post> result = new ArrayList<Post>();
         manager = DBConnection.getConnect().createEntityManager();
-        //result = manager.createQuery("SELECT id, date, editdate, text FROM post WHERE id_user="+String.valueOf(user.getId())).getResultList();
-        //Query q = manager.createNativeQuery("Select * FROM user WHERE name="+name, User.class);
-
         user=manager.find(User.class,user.getId());
         user.getPosts().size();
-
         closeManager();
         return user.getPosts();
     }
@@ -98,9 +92,10 @@ public class PostDAO {
      */
     public static boolean delete(int id) {
         boolean result = false;
+        Post p = get(id);
         manager = DBConnection.getConnect().createEntityManager();
         manager.getTransaction().begin();
-        manager.remove(id);
+        manager.remove(manager.contains(p) ? p : manager.merge(p));
         result= true;
         manager.getTransaction().commit();
         closeManager();
