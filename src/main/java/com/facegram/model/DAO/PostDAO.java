@@ -6,6 +6,7 @@ import com.facegram.model.dataobject.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,9 +67,14 @@ public class PostDAO {
     public static List<Post> getPostOfUser(User user){
         List<Post> result = new ArrayList<Post>();
         manager = DBConnection.getConnect().createEntityManager();
-        result = manager.createQuery("SELECT id, date, edit_date, text FROM post WHERE id_user="+String.valueOf(user.getId())).getResultList();
+        //result = manager.createQuery("SELECT id, date, editdate, text FROM post WHERE id_user="+String.valueOf(user.getId())).getResultList();
+        //Query q = manager.createNativeQuery("Select * FROM user WHERE name="+name, User.class);
+
+        user=manager.find(User.class,user.getId());
+        user.getPosts().size();
+
         closeManager();
-        return result;
+        return user.getPosts();
     }
 
     /**

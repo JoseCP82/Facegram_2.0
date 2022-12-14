@@ -92,7 +92,7 @@ public class PostController extends Controller {
      * @param byeStatus Estado del boton Bye
      */
     public void setPost(Post post, boolean byeStatus) {
-        this.lblUser.setText(post.getOwner().getName());
+        //this.lblUser.setText(post.getOwner().getName());
         this.txtContent.setText(post.getText());
         this.lblDate.setText(post.getDate().toString());
         this.btnDelete.setDisable(byeStatus);
