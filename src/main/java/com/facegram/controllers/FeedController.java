@@ -94,7 +94,7 @@ public class FeedController extends Controller implements Initializable {
                 pane = fxmlLoader.load();
                 PostController pc = fxmlLoader.getController();
                 u = p.getOwner();
-                u.setName(new UserDAO().get(u.getId()).getName());
+              //  u.setName(new UserDAO().get(u.getId()).getName());
                 u.setPosts(PostDAO.getPostOfUser(u));
                 if(p.getOwner().getName().equals(permanentUser.getName())) {
                     pc.setPost(p,false);
