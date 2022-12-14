@@ -17,6 +17,7 @@ public class User implements Serializable {
 
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     @Column(name = "NAME")
     private String name;
@@ -24,13 +25,16 @@ public class User implements Serializable {
     private String password;
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
+    //@ManyToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Transient
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> followereds;
     //@ManyToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name = "ID_USER")
     @Transient
     private List<User> followers;
+    //@ManyToMany(cascade = CascadeType., fetch = FetchType.LAZY)
+    @Transient
+    private List<User> likes;
 
     /**
      * Constructores de User por defecto y fullBuild
