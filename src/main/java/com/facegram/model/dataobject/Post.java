@@ -181,4 +181,15 @@ public class Post implements Serializable {
     public int hashCode() {
         return Objects.hash(id, text, date, editDate, owner, comments);
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", date=" + date +
+                ", editDate=" + editDate +
+                ", owner=" + owner.getId() +
+                '}';
+    }
 }
