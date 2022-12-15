@@ -90,7 +90,7 @@ public class RegisterController extends Controller {
             User u = new User(name,password);
             UserDAO uDAO = new UserDAO();
             u.setPassword(encrypt(password));
-            if(!uDAO.get(name).getName().equals(name)){
+            if(uDAO.get(name).getName().equals(name)){
                 Message m = new ConfirmMessage("El usuario no existe.\n ¿Desea crearlo?");
                 m.showMessage();
                 if(((ConfirmMessage)m).getBt()==ButtonType.OK){

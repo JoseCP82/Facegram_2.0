@@ -14,7 +14,7 @@ public class App extends Application {
     public static Stage stage = null;
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("feed.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("register.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         this.stage=stage;
