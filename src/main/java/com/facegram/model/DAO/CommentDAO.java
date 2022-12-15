@@ -39,11 +39,11 @@ public class CommentDAO {
      * @return Lista de comentarios
      */
     public static List<Comment> getCommentsofPost(Post post) {
-        List<Comment> result = new ArrayList<Comment>();
         manager = DBConnection.getConnect().createEntityManager();
-
+        post=manager.find(Post.class,post.getId());
+        post.getComments().size();
         closeManger();
-        return result;
+        return post.getComments();
     }
 
 

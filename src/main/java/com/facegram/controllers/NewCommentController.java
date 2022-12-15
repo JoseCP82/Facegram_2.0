@@ -13,6 +13,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 
 import java.sql.Connection;
+import java.util.Calendar;
+import java.util.Date;
 
 public class NewCommentController extends Controller {
 
@@ -35,6 +37,9 @@ public class NewCommentController extends Controller {
             if (!text.equals("")) {
                 Connection conn = BadWords.getConnect();
                 if (!BadWords.isFound(text)) {
+                    Calendar calendar = Calendar.getInstance();
+                    Date dateNow = calendar.getTime();
+                    comment.setDate(dateNow);
                     comment.setText(text);
                     comment.setUser(permanentUser);
                     comment.setPost(new PostDAO().get(permanentIdPost));

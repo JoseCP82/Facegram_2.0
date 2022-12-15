@@ -12,6 +12,7 @@ public class Comment implements Serializable {
 
     @Id
     @Column (name = "id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     //@OneToOne (mappedBy = "user", cascade = CascadeType.ALL)
     @ManyToOne (fetch = FetchType.LAZY)
@@ -31,22 +32,8 @@ public class Comment implements Serializable {
      * @param text Texto que contiene el comentario
      * @param date Fecha de publicación del comentario
      */
-    public Comment(int id, String text, Date date) {
+    public Comment(String text, Date date) {
         this.id = id;
-        this.text = text;
-        this.date = date;
-    }
-
-    /**
-     * Constructor parametrizado
-     * @param id Identificacion asignada al comentario
-     * @param user Usuario que ha escrito el comentario
-     * @param text Texto que contiene el comentario
-     * @param date Fecha de publicación del comentario
-     */
-    public Comment(int id,User user, String text, Date date) {
-        this.id = id;
-        this.user = user;
         this.text = text;
         this.date = date;
     }
@@ -54,10 +41,7 @@ public class Comment implements Serializable {
     /**
      * Constructor por defecto
      */
-    public Comment() {
-        this.id=-1;
-        this.text = "";
-        this.date = null;
+    public Comment() {this("",null);
     }
 
     public Comment(int anInt) {
